@@ -1,6 +1,6 @@
 <script>
 
-  export let message = "Default value";
+  export let message;
   export let showModal = false;
   export let isPromo = false;
   
@@ -28,6 +28,10 @@
     background: crimson;
     color: white;
   }
+  h5 {
+    font-size: 32px;
+    margin: 0 0 20px;
+  }
 
 </style>
 
@@ -36,7 +40,10 @@
 {#if (showModal)}
   <div class="backdrop" class:promo={isPromo} on:click|self> <!-- Forward the event and the event modifier. The self event modifier activates only when the element itself is clicked. -->
     <div class="modal">
-      <p>{message}</p>
+      {#if (message)}
+        <h5>{message}</h5>
+      {/if}
+      <slot />
     </div>
   </div>
 {/if}

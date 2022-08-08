@@ -6,6 +6,7 @@
   import ModalComponent from "./tutorial/gettingStarted/ModalComponent.svelte";
   import SlotsModal from "./tutorial/gettingStarted/SlotsModal.svelte";
   import AddTodo from "./components/AddTodo.svelte";
+  import Forms from "./tutorial/gettingStarted/Forms.svelte";
 
   export let name;
 
@@ -23,6 +24,7 @@
 
   let showModal = false;
   let showSlotModal = false;
+  let showFormModal = false;
 
   const toggleModal = () => {
     showModal = !showModal;
@@ -30,6 +32,10 @@
 
   const toggleSlotModal = () => {
     showSlotModal = !showSlotModal;
+  };
+  
+  const toggleFormModal = () => {
+    showFormModal = !showFormModal;
   };
 </script>
 
@@ -85,8 +91,19 @@
     <AddTodo />
   </SlotsModal>
   <button on:click={toggleSlotModal}>Add Todo</button>
-  <p>In this section we changed the html inside of the modal by passing in a slot.</p>
-  <!-- The todo list created earlier -->
+  <p>
+    In this section we changed the html inside of the modal by passing in a
+    slot.
+  </p>
+
+  <!-- ======================================================================== -->
+  <div class="linebreak" />
+  <h2>Forms</h2>
+  <h4>Add your vehicle below</h4>
+  <ModalComponent message="Add Vehicle" isPromo={false} showModal={showFormModal} on:click={toggleFormModal}>
+    <Forms />
+  </ModalComponent>
+  <button on:click={toggleFormModal}>Add Vehicle</button>
 </main>
 
 <style>
