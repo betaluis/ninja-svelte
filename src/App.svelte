@@ -7,6 +7,7 @@
   import SlotsModal from "./tutorial/gettingStarted/SlotsModal.svelte";
   import AddTodo from "./components/AddTodo.svelte";
   import Forms from "./tutorial/gettingStarted/Forms.svelte";
+  import TodoModal from "./components/TodoModal.svelte";
 
   export let name;
 
@@ -33,10 +34,36 @@
   const toggleSlotModal = () => {
     showSlotModal = !showSlotModal;
   };
-  
+
   const toggleFormModal = () => {
     showFormModal = !showFormModal;
   };
+
+  let vehicles = [];
+  const addVehicle = (e) => {
+    console.log(e.detail);
+    const vehicle = e.detail;
+    vehicles = [vehicle, ...vehicles];
+  };
+
+  /////////// TODO APP ////////////
+
+  let todos = [];
+  let showTodoModal = false;
+  const toggleTodoModal = () => {
+    showTodoModal = !showTodoModal;
+  }
+  const addTodo = (e) => {
+    const newTodo = e.detail;
+    console.log(newTodo)
+    todos = [newTodo, ...todos];
+    showTodoModal = false;
+  }
+
+  const updatedTodoList = (e) => {
+    const updatedList = e.detail;
+    todos = [...e.detail];
+  }
 </script>
 
 <main>
@@ -67,6 +94,7 @@
 
   <!-- ======================================================================== -->
   <div class="linebreak" />
+  <h2>Inline Event Handlers</h2>
   <InlineEventHandlers />
 
   <!-- ======================================================================== -->
@@ -100,10 +128,42 @@
   <div class="linebreak" />
   <h2>Forms</h2>
   <h4>Add your vehicle below</h4>
-  <ModalComponent message="Add Vehicle" isPromo={false} showModal={showFormModal} on:click={toggleFormModal}>
+  <ModalComponent
+    message="Add Vehicle"
+    isPromo={false}
+    showModal={showFormModal}
+    on:click={toggleFormModal}
+  >
     <Forms />
   </ModalComponent>
   <button on:click={toggleFormModal}>Add Vehicle</button>
+  <!-- ======================================================================== -->
+  <div class="linebreak" />
+  <h2>Dispatching Custom Events</h2>
+  <h4>Vehicles:</h4>
+  {#if vehicles.length === 0}
+    <p style="margin: 20px 0 40px">
+      No vehicles listed. Guess you're walking home.
+    </p>
+  {:else}
+    {#each vehicles as vehicle (vehicle.id)}
+      <div>
+        <p>Year: {vehicle.year}</p>
+        <p>Make: {vehicle.make}</p>
+        <p>Model: {vehicle.model}</p>
+      </div>
+    {/each}
+  {/if}
+  <Forms on:addVehicle={addVehicle} />
+
+  <!-- ======================================================================== -->
+  <div class="linebreak" />
+  <h2>Create To Do</h2>
+  <InlineEventHandlers {todos} on:updatedTodoList={updatedTodoList} />
+  <button on:click={toggleTodoModal}>Add To Do</button>
+  <TodoModal title="Add Todo" {showTodoModal} on:click={toggleTodoModal}>
+    <AddTodo on:addTodo={addTodo} {showTodoModal}/>
+  </TodoModal>
 </main>
 
 <style>

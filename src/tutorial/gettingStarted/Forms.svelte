@@ -1,4 +1,7 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+  let dispatch = createEventDispatcher();
+
   let make;
   let model;
   let year;
@@ -7,7 +10,15 @@
   let addOns = [];
 
   const handleSubmit = () => {
-    console.log(year, make, model, addOns, wheelDrive);
+    const vehicle = {
+      make,
+      model,
+      year,
+      addOns,
+      wheelDrive,
+      id: Math.random() * 100000,
+    };
+    dispatch('addVehicle', vehicle)
   };
 </script>
 
@@ -21,15 +32,15 @@
       A/C
     </label>
     <label>
-      <input type="checkbox" bind:group={addOns} value="Auto Pilot"/>
+      <input type="checkbox" bind:group={addOns} value="Auto Pilot" />
       Auto Pilot
     </label>
     <label>
-      <input type="checkbox" bind:group={addOns} value="Bluetooth"/>
+      <input type="checkbox" bind:group={addOns} value="Bluetooth" />
       Bluetooth
     </label>
     <label>
-      <input type="checkbox" bind:group={addOns} value="Seat Warmers"/>
+      <input type="checkbox" bind:group={addOns} value="Seat Warmers" />
       Seat Warmers
     </label>
   </div>
@@ -41,11 +52,13 @@
 </form>
 
 <style>
-  form { 
+  form {
     max-width: 300px;
     margin: 0 auto;
   }
-  input[type="text"], input[type="number"], button {
+  input[type="text"],
+  input[type="number"],
+  button {
     display: block;
     width: 100%;
     margin: 10px 0;

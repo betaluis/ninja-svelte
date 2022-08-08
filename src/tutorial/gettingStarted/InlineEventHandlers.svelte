@@ -1,12 +1,8 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
+  let dispatcher = createEventDispatcher();
   // your script goes here
-  let todos = [
-    {task: "Buy groceries", id: 1},
-    {task: "Clean house", id: 2},
-    {task: "Pay bills", id: 3},
-    {task: "Walk dog", id: 4},
-    {task: "Make lunch", id: 5}
-  ]
+  export let todos = []; 
 
   // Just because you're referecing a handler inside of a loop doesn't mean you have access to the item when using an handler.
   // const handler = () => { console.log(todos) } ========> This would not work. "Todos" will be undefined
@@ -17,12 +13,12 @@
 
   const handleClick = (id) => {
     todos = todos.filter(t => id !== t.id);
+    dispatcher("updatedTodoList", todos);
   }
 
 </script>
 
 <section>
-  <h2>Inline Event Handlers</h2>
   <ul>
   {#each todos as todo (todo.id)}
     <div class="flex">
